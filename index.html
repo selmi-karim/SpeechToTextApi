@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A couple of Web Components that can do amazing stuff using the Web Speech API.">
+
+    <!-- Facebook Metatags -->
+    <meta property="fb:app_id" content="1502439096643233">
+    <meta property="og:title" content="PinGo Team">
+    <meta property="og:description" content="Web Speech API.">
+    <meta property="og:url" content="http://zenorocha.github.io/voice-elements/">
+    <meta property="og:image" content="http://zenorocha.github.io/voice-elements/demo/fb.jpg">
+
+    <title>&lt;voice-elements&gt;</title>
+
+    <!-- Demo CSS -->
+    <link rel="icon" href="https://github.global.ssl.fastly.net/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto+Slab">
+    <link rel="stylesheet" href="demo/demo.css">
+
+    <!-- Importing Web Component's Polyfill -->
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <!-- Importing Custom Elements -->
+    <link rel="import" href="src/voice-player.html">
+    <link rel="import" href="src/voice-recognition.html">
+</head>
+<body>
+
+
+    <!-- Splash Screen -->
+    <div class="splash-container">
+        <div class="splash">
+            <h1 class="splash-head">
+                <div class="splash-first-line">&lt;<span class="highlight">Projet</span></div>
+                <div class="splash-second-line"><span class="highlight">Semestriel</span>&gt;</div>
+            </h1>
+            <p class="splash-subhead">
+                controler votre ma3mel avec Speech.
+            </p>
+            
+        </div>
+    </div>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+
+        <!-- Voice Recognition -->
+        <div class="ribbon l-box-lrg pure-g">
+            <div class="section pure-u-1 pure-u-med-1-2 pure-u-lrg-3-5 center">
+                <h2 class="content-head content-head-ribbon">&lt;voice-recognition&gt;</h2>
+                <p>ahki maah w howa taw yetsaref.</p>
+
+                <!-- Demo #1 -->
+                
+				<script src="https://www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
+								
+	
+				<script>
+				  // Initialize Firebase
+				  var ledState = 0;
+				  var motorState = 0;
+				var config = {
+				    apiKey: "AIzaSyDkBIODnL7f5HvdRRpzIG-Kt96FdOBfUgE",
+				    authDomain: "sendmessage-2fff9.firebaseapp.com",
+				    databaseURL: "https://sendmessage-2fff9.firebaseio.com",
+				    projectId: "sendmessage-2fff9",
+				    storageBucket: "sendmessage-2fff9.appspot.com",
+				    messagingSenderId: "3199905295"
+				  };
+				  firebase.initializeApp(config); 
+				  var database = firebase.database();
+				 function sendActionToDataBase(toDataBase){
+				  if(toDataBase[0]=='l' || toDataBase[0]=='L'){
+				  	if(ledState==0) ledState=1;
+				  	else ledState = 0;
+				    writeLedState("Led",ledState);
+				  }else if(toDataBase[0]=='m' || toDataBase[0]=='M'){
+				  	if(motorState==0) motorState=1;
+				  	else motorState = 0;
+				    writeMoteurState("Moteur",motorState);
+				  }		
+				  
+				 }
+
+				 function writeLedState(led,ledState) {
+				    firebase.database().ref('Actions/'+led).set({
+				    value: ledState
+				    });
+				  alert("succes");  
+				  }
+				  function writeMoteurState(Moteur,motorState) {
+				    firebase.database().ref('Actions/'+Moteur).set({
+				    value: motorState
+				    });
+				  alert("succes");  
+				  }
+				//************************//
+				</script>								
+                <voice-recognition id="recognition-element"></voice-recognition>
+                <script>
+                var lastSend = 0;
+                window.addEventListener('WebComponentsReady', function(e) {
+                    var form = document.querySelector('#recognition-form'),
+                        input = document.querySelector('#recognition-input'),
+                        element = document.querySelector('#recognition-element');
+
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        element.start();
+                    });
+
+                    element.addEventListener('result', function(e) {
+                    	//input.textContent = "00";
+                        var speech = "";
+                        var speechB = "";
+                        for (i = lastSend+1; i < e.detail.result.length; i++) {
+						    speech+=e.detail.result[i];
+						    speechB+=e.detail.result[i];
+						    if(e.detail.result[i]==' ') speech="";
+						}             
+						speech = speech.replace(' ', '');
+						speechB = speechB.replace('hello', '');
+						if(speech=="clear" || speech=="please"){
+								input.textContent = "";
+								lastSend  = e.detail.result.length;
+						}
+                        else if(speech[0]=='s' || speech[i]=='S'){
+                        		speechB = speechB.replace(speech,'');
+                        		alert("hani chnekhdem el action hedhi: "+speechB+"....");
+								input.textContent = "";
+								lastSend  = e.detail.result.length;
+								sendActionToDataBase(speechB);
+								
+							
+                        }else if(speech=="hello" || speech=="ello" || speech=="lingerie" || speech=="bonjour"){
+                        		alert("welcome Mr Karim, Send Me action!");
+                        		input.textContent = "";
+								lastSend  = e.detail.result.length;
+                        }
+                        else{
+                        input.textContent = speechB;
+                        }  
+                    });
+                });
+                </script>
+
+                <div class="example">
+                    <p>Click "start", authorize, and say something...</p>
+
+                    <form id="recognition-form" class="pure-form">
+                        <fieldset>
+                            <textarea name="testss" id="recognition-input"></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <button id="recognition-submit" class="pure-button pure-button-primary">Start!</button>
+                        </fieldset>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer l-box is-center">
+            <p>
+                Made with <span class="love">♥</span> by <a href="https://github.com/karimation">PinGo Team</a> under <a href="http://www.eniso.info/vr/">ENISo</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Demo Scripts -->
+    <script src="demo/support.js"></script>
+
+    <!-- Syntax Highlight -->
+    <link href="demo/highlight.github.css" rel="stylesheet">
+    <script src="demo/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-4114546-42', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
