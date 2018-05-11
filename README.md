@@ -2,8 +2,9 @@
 
 > Web Component wrapper to the [Web Speech API] that allows you to do voice recognition (speech to text) and speech synthesis (text to speech) using [Polymer](http://www.polymer-project.org/).
 
-
-
+## how to use
+1: bower install && npm install
+2: grunt server
 ## Browser Support
 
 Unfortunately, the [Web Speech API](https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html) still have a poor support. Check [Can I Use](http://caniuse.com/#feat=web-speech) for more information.
