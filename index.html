@@ -52,53 +52,7 @@
             <div class="section pure-u-1 pure-u-med-1-2 pure-u-lrg-3-5 center">
                 <h2 class="content-head content-head-ribbon">&lt;voice-recognition&gt;</h2>
                 <p>ahki maah w howa taw yetsaref.</p>
-
-                <!-- Demo #1 -->
-                
-				<script src="https://www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
-								
-	
-				<script>
-				  // Initialize Firebase
-				  var ledState = 0;
-				  var motorState = 0;
-				var config = {
-				    apiKey: "AIzaSyDkBIODnL7f5HvdRRpzIG-Kt96FdOBfUgE",
-				    authDomain: "sendmessage-2fff9.firebaseapp.com",
-				    databaseURL: "https://sendmessage-2fff9.firebaseio.com",
-				    projectId: "sendmessage-2fff9",
-				    storageBucket: "sendmessage-2fff9.appspot.com",
-				    messagingSenderId: "3199905295"
-				  };
-				  firebase.initializeApp(config); 
-				  var database = firebase.database();
-				 function sendActionToDataBase(toDataBase){
-				  if(toDataBase[0]=='l' || toDataBase[0]=='L'){
-				  	if(ledState==0) ledState=1;
-				  	else ledState = 0;
-				    writeLedState("Led",ledState);
-				  }else if(toDataBase[0]=='m' || toDataBase[0]=='M'){
-				  	if(motorState==0) motorState=1;
-				  	else motorState = 0;
-				    writeMoteurState("Moteur",motorState);
-				  }		
-				  
-				 }
-
-				 function writeLedState(led,ledState) {
-				    firebase.database().ref('Actions/'+led).set({
-				    value: ledState
-				    });
-				  alert("succes");  
-				  }
-				  function writeMoteurState(Moteur,motorState) {
-				    firebase.database().ref('Actions/'+Moteur).set({
-				    value: motorState
-				    });
-				  alert("succes");  
-				  }
-				//************************//
-				</script>								
+							
                 <voice-recognition id="recognition-element"></voice-recognition>
                 <script>
                 var lastSend = 0;
