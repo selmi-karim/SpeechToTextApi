@@ -1,5 +1,6 @@
 # SpeechToTextApi
 
+
 Speech to Text service provides an API. 
 The service can transcribe speech from various languages and audio formats in web. 
 
@@ -8,6 +9,7 @@ The service can transcribe speech from various languages and audio formats in we
  bower install && npm install
 
  grunt server
+ 
  ```
 
 # Author
